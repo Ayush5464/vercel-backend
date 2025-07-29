@@ -1,9 +1,22 @@
 const Enquirymodel = require("../model/EnquiryModel.js")
 
 exports.EnquiryInsert = async (req, res) => {
-    const insert = await Enquirymodel.create(req.body);
-    res.send("data inserted" + insert)
-}
+    try {
+        console.log("Received data:", req.body);
+        const insert = await Enquirymodel.create(req.body);
+        res.status(201).json({
+            message: "Data inserted successfully",
+            data: insert
+        });
+    } catch (error) {
+        console.error("Insert Error:", error.message);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
+    }
+};
+
 
 exports.EnquiryRead = async (req, res) => {
     const find = await Enquirymodel.find();
